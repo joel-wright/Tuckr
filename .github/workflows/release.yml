@@ -55,7 +55,7 @@ jobs:
           targets: ${{ matrix.target }}
 
       - name: Build
-        uses: actions-rs/cargo@v1
+        uses: step-security/actions-rs-toolchain@v1
         with:
           use-cross: true
           command: build
@@ -91,3 +91,4 @@ jobs:
         with:
           files: |
             ${{ env.ASSET }}
+            ${{ env.ASSET_SUM }}
