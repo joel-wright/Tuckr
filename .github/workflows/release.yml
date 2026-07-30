@@ -67,7 +67,7 @@ jobs:
           target: ${{ matrix.target }}
 
       - name: Build
-        uses: step-security/actions-rs-toolchain@v1
+        uses: step-security/actions-rs-cargo@v1
         with:
           use-cross: ${{ matrix.cross }}
           command: build
