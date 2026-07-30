@@ -64,25 +64,25 @@ jobs:
       - name: Build archive
         shell: bash
         run: |
-          binary_name="tuckr"
+          BINARY="tuckr"
+          ARCHIVE="$BINARY-${{ env.VERSION }}-${{ matrix.target }}"
 
-          dirname="$binary_name-${{ env.VERSION }}-${{ matrix.target }}"
-          mkdir "$dirname"
+          mkdir "$ARCHIVE"
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
-            mv "target/${{ matrix.target }}/release/$binary_name.exe" "$dirname"
+            mv "target/${{ matrix.target }}/release/$BINARY.exe" "$ARCHIVE"
           else
-            mv "target/${{ matrix.target }}/release/$binary_name" "$dirname"
+            mv "target/${{ matrix.target }}/release/$BINARY" "$ARCHIVE"
           fi
 
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
-            7z a "$dirname.zip" "$dirname"
+            7z a "$ARCHIVE.zip" "$ARCHIVE"
             certutil -hashfile "$ARCHIVE.zip" SHA256 > "$ARCHIVE.zip.sha256"
-            echo "ASSET=$dirname.zip" >> $GITHUB_ENV
+            echo "ASSET=$ARCHIVE.zip" >> $GITHUB_ENV
             echo "ASSET_SUM=$ARCHIVE.zip.sha256" >> $GITHUB_ENV
           else
-            tar -czf "$dirname.tar.gz" "$dirname"
+            tar -czf "$ARCHIVE.tar.gz" "$ARCHIVE"
             shasum -a 256 "$ARCHIVE.tar.gz" > "$ARCHIVE.tar.gz.sha256"
-            echo "ASSET=$dirname.tar.gz" >> $GITHUB_ENV
+            echo "ASSET=$ARCHIVE.tar.gz" >> $GITHUB_ENV
             echo "ASSET_SUM=$ARCHIVE.tar.gz.sha256" >> $GITHUB_ENV
           fi
 
